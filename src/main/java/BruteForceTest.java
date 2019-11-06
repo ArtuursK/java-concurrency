@@ -5,24 +5,28 @@ import java.util.TreeSet;
 
 public class BruteForceTest {
 
-    private static final String KEY = "zAc1";
+    private static final String KEY = "Passwor";
     private static final int MAX_ITERATIONS = 10000;
     private static boolean KEY_FOUND = false;
 
     private static long KEY_COUNT = 0;
 
-    //check all combinations from the given ASCII table range(decimal 33-126)
-    private static final int ASCII_CODE_FROM = 33;
-    private static final int ASCII_CODE_TO = 126;
-
-    private static final int ASCII_CODE_FROM2 = 65;
-    private static final int ASCII_CODE_TO2 = 90;
+    /*
+    * ASCII_MODE
+    * Possible values are:
+    * 1 - all,
+    * 2 - only uppercase,
+    * 3 - only uppercase and lowercase
+    * 4 - upper, lowercase and ?, !
+    * 5 - upper, lowercase, ?, ! and numbers 0-9
+    */
+    private static final int ASCII_MODE = 3;
 
 
 
     public static void guessKey(){
 
-        Set<String> asciiSet = getAsciiSet();
+        Set<String> asciiSet = getAsciiSet(ASCII_MODE);
         int characterCount = 1;
 
         long timeBeforeProcessing = new Date().getTime();
@@ -45,11 +49,15 @@ public class BruteForceTest {
 
         if(KEY_FOUND == false){
             if (k == 0) {
-                System.out.println(prefix);
+                //System.out.println(prefix);
                 if(prefix.equals(KEY)){
                     KEY_FOUND = true;
+                    System.out.println("KEY: " + prefix);
                 }
                 KEY_COUNT++;
+                if(KEY_COUNT % 100000000L == 0){
+                    System.out.println("KEYs checked: " + KEY_COUNT);
+                }
                 return;
             }
 
@@ -67,19 +75,75 @@ public class BruteForceTest {
 
     }
 
-    private static Set<String> getAsciiSet(){
-        Set<String> asciiSet = new HashSet<String>();
-        int characterCode = ASCII_CODE_FROM;
+    private static Set<String> getAsciiSet(int asciiMode){
+        int characterCodeFrom;
+        int characterCodeTo;
 
-        while(characterCode <= ASCII_CODE_TO){
+        switch (asciiMode){
+            case 1:
+                characterCodeFrom = 33;
+                characterCodeTo = 126;
+                break;
+            case 2 :
+                characterCodeFrom = 65;
+                characterCodeTo = 90;
+                break;
+            case 3:
+                // 65 - 90 & 97 - 122
+                characterCodeFrom = 65;
+                characterCodeTo = 90;
+                break;
+            case 4:
+                characterCodeFrom = 65;
+                characterCodeTo = 90;
+                break;
+            case 5:
+                characterCodeFrom = 65;
+                characterCodeTo = 90;
+                break;
+            default:
+                characterCodeFrom = 0;
+                characterCodeTo = 127;
+                break;
+        }
+
+        Set<String> asciiSet = new HashSet<String>();
+        int characterCode = characterCodeFrom;
+
+        while(characterCode <= characterCodeTo){
             asciiSet.add(String.valueOf((char)characterCode));
             characterCode++;
         }
-        /* debug
+
+
+        if(asciiMode == 3 || asciiMode == 4 || asciiMode == 5){
+            characterCode = 97;
+            while(characterCode <= 122){
+                asciiSet.add(String.valueOf((char)characterCode));
+                characterCode++;
+            }
+        }
+
+        if (asciiMode == 4 || asciiMode == 5){
+            asciiSet.add(String.valueOf((char)33));
+            asciiSet.add(String.valueOf((char)63));
+        }
+
+        if (asciiMode == 5){
+            //number 0 - 9 (ascii code 48 - 57)
+            characterCode = 48;
+            while(characterCode <= 57){
+                asciiSet.add(String.valueOf((char)characterCode));
+                characterCode++;
+            }
+        }
+
+
+
         for(String s : asciiSet){
             //System.out.println(s);
         }
-        */
+
         return asciiSet;
     }
 
