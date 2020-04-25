@@ -7,18 +7,18 @@ public class Main {
 
     public static final int THREAD_COUNT = 5;
 
-    public static void main(String[] args) throws ExecutionException, InterruptedException {
+    public static void main(String[] args) throws Exception {
         System.out.println("______________ Concurrency application starting __________________");
 
         //CountTimeComparison.parallelProcessing();
         //CountTimeComparison.inOrderProcessing();
 
 
-        BruteForceTest.guessKey();
+        //BruteForceTest.guessKey();
+        APIDOSTest.testApi();
 
 
-
-        System.out.println("______________ Concurrency application ending __________________");
+        System.out.println("______________ Concurrency application end __________________");
     }
 
 }

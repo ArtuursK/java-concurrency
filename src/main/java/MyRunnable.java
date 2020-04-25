@@ -1,5 +1,5 @@
 
-public class MyRunnable implements Runnable{
+public class MyRunnable implements Runnable {
 
     private final long countUntil;
     private long sum;
